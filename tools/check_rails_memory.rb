@@ -33,6 +33,7 @@ def memory(pid)
   data = File.read("/proc/#{pid}/smaps_rollup")
   { pid:, rss_bytes: Integer(data[/^Rss:\s+(\d+)/, 1]) * 1024,
     pss_bytes: Integer(data[/^Pss:\s+(\d+)/, 1]) * 1024,
+    anonymous_huge_bytes: Integer(data[/^AnonHugePages:\s+(\d+)/, 1]) * 1024,
     uss_bytes: data.scan(/^Private_(?:Clean|Dirty):\s+(\d+)/).sum { |row| Integer(row[0]) } * 1024 }
 end
 
@@ -81,6 +82,7 @@ report = { started_at: Time.now.utc.iso8601, ruby: RUBY_DESCRIPTION, rails: Gem.
            core_source_root: core_root, core_source_commit: ENV.fetch("RAILS_MEMORY_CORE_COMMIT", nil),
            gc_policy: "ordinary GC",
            malloc_arena_max: ENV.fetch("MALLOC_ARENA_MAX", nil),
+           glibc_tunables: ENV.fetch("GLIBC_TUNABLES", nil),
            gc_probe: case_set == "gate" ? "four scalar GC values at first before_fork, master exit, worker boot/shutdown" : nil,
            mem_total_kib: Integer(File.read("/proc/meminfo")[/^MemTotal:\s+(\d+)/, 1]),
            load: { target_requests_per_second: 100, client_threads: 4, channels: 32, server_threads_per_worker: server_threads, rpc_deadline_seconds: 2 },
