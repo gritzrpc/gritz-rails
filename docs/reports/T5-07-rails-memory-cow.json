@@ -1,0 +1,517 @@
+{
+  "started_at": "2026-10-02T11:47:05Z",
+  "ruby": "ruby 3.4.11 (2026-09-23 revision 592f1ffdb3) +PRISM [aarch64-linux]",
+  "rails": "8.1.4",
+  "active_record": "8.1.4",
+  "sqlite3": "2.9.6",
+  "grpc": "1.83.0",
+  "kernel": "Linux version 6.8.0-117-generic (buildd@bos03-arm64-024) (aarch64-linux-gnu-gcc-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0, GNU ld (GNU Binutils for Ubuntu) 2.42) #117-Ubuntu SMP PREEMPT_DYNAMIC Thu May  7 17:26:37 UTC 2026",
+  "duration_per_case": 600,
+  "sequential": true,
+  "case_set": "fixed_gate",
+  "cpu_count": 2,
+  "core_source_root": "/workspace/gritz-core-phase5-fix",
+  "core_source_commit": "e8999ec45992d0ce4797e230c0ea28ede46dc92d",
+  "gc_policy": "sample before_fork opt-in",
+  "gc_probe": "four scalar GC values at first before_fork, master exit, worker boot/shutdown",
+  "mem_total_kib": 2005512,
+  "load": {
+    "target_requests_per_second": 100,
+    "client_threads": 4,
+    "channels": 32,
+    "server_threads_per_worker": 16,
+    "rpc_deadline_seconds": 2
+  },
+  "source_sha256": {
+    "gritz-core-phase5-fix/lib/gritz/call.rb": "ddc0432587ab0c240890eee5181fb8a576e81508d1b61590b3811bf57f46bdd5",
+    "gritz-core-phase5-fix/lib/gritz/channel_registry.rb": "b213aef84395a4504fe2106810b16faebf7cac0bf72f790b0c4590e0af814e8e",
+    "gritz-core-phase5-fix/lib/gritz/cli.rb": "27f7984ee3f405bb015e45d4206c6db0bd17021a488f978d1b2ecd235d437972",
+    "gritz-core-phase5-fix/lib/gritz/client.rb": "fd72f6c412755e38e62e67aed61300f29dad975c230a556e5e586de5699a350d",
+    "gritz-core-phase5-fix/lib/gritz/client/call_context.rb": "9432b7f8ff645c6e1a252c809ca59ac80e215c8ff80c78ea81c49be7e6aac07c",
+    "gritz-core-phase5-fix/lib/gritz/client/invocation.rb": "40edad71a482179fc14abf12b64762967f23e3c33deb6b0142c739b3d7fb65de",
+    "gritz-core-phase5-fix/lib/gritz/compat/gruf.rb": "5520549efc27e20db2ddb7f03b0216ad7a71338fb486f3d7d3c1dbacd00f29de",
+    "gritz-core-phase5-fix/lib/gritz/compat/gruf/config_converter.rb": "e2e2e91af3459e3c06cceb9cf13756e6f80cf03f24be6d1e4a610c29470b3066",
+    "gritz-core-phase5-fix/lib/gritz/configuration.rb": "606a3686c27045ffff4eb04ebb2680557fc927aab68dbf60c68affd96e6a2afe",
+    "gritz-core-phase5-fix/lib/gritz/configuration_error.rb": "5f4e707ea779ca901bc2a347a55f679a4c6e8b04793d037e582238c0ee7b7fe5",
+    "gritz-core-phase5-fix/lib/gritz/context.rb": "bc3b8c4bebccc53fa0837fc2a283442781fd96a05606c9c5e666784cc2b7be05",
+    "gritz-core-phase5-fix/lib/gritz/controller.rb": "c84d970d7130fafd2913ab819d43ba5105bda42db41a57e2f6f48628d024bbe6",
+    "gritz-core-phase5-fix/lib/gritz/core.rb": "591b24eaf2a6282f751feede903d27f004bc385ba0fcfdb768ed46069fdfea84",
+    "gritz-core-phase5-fix/lib/gritz/core/version.rb": "c93b65dd5c9b01fb1857643cd61a2d149b046bba6c141fdd4c2ec8aeea5e8b6f",
+    "gritz-core-phase5-fix/lib/gritz/dispatcher.rb": "922e4e6a235728263af4c7e7e144cfe657a7419b6ab31fb45f8de24e9cd00267",
+    "gritz-core-phase5-fix/lib/gritz/dsl.rb": "58bee8f0fb88b3cf55f6fbd50404340934bd6120679001a88cfb542adc5131bc",
+    "gritz-core-phase5-fix/lib/gritz/errors.rb": "0e2384ec253a15c8019ed926f3a22301be0afb24f244901c2afcccad508cb9ae",
+    "gritz-core-phase5-fix/lib/gritz/fork_guard.rb": "06152dcd185c36f5c96e6a5747dd6982d27cd26983bccd114bb60e2a602bb6be",
+    "gritz-core-phase5-fix/lib/gritz/method_descriptor.rb": "4ff4d6bc8fda077f7e6f01ff0352b77e651a89fbb5efc4183d2872c6be971b14",
+    "gritz-core-phase5-fix/lib/gritz/metrics/aggregator.rb": "0999d883b2a8932a6ffc616bc655a40b946a4d47dead0b0f4e50cc5dcc3a47e0",
+    "gritz-core-phase5-fix/lib/gritz/metrics/recorder.rb": "6ff6ae4e427361a76543c66b81b445d9eb9385894564de9eaf00d97812decbee",
+    "gritz-core-phase5-fix/lib/gritz/middleware/context.rb": "292b76431c658430beaf3e110d14420353f7ff6891f198fa950945752860f8b2",
+    "gritz-core-phase5-fix/lib/gritz/middleware/exception_mapper.rb": "70b9e624ec10b41474cb0ac673c430a33484c104f5fb60f08d54115fe5d26310",
+    "gritz-core-phase5-fix/lib/gritz/middleware/logging.rb": "7a06caec75291e7e988e8ae001b614772630cf4ba4d218cc3085466e3621c368",
+    "gritz-core-phase5-fix/lib/gritz/middleware/metrics.rb": "d6a12f9f31a7db2ef6cc5fa7a884d97b2fea1c331621762f42c901890cdeaf01",
+    "gritz-core-phase5-fix/lib/gritz/middleware/request_id.rb": "71a8180c3cd4e7a7f6b43b6615361c97255ddcc6c3e50e6d2806f38409c21b50",
+    "gritz-core-phase5-fix/lib/gritz/middleware/stack.rb": "f9c4bb458a0ec7992f00500913b67c0ad4a64e4b05c130e3899705a0410b250d",
+    "gritz-core-phase5-fix/lib/gritz/router.rb": "cbe8ebd3581e4efbf72f2e3a0cd16008d3c19f7a510e410ff1331eb056bb8903",
+    "gritz-core-phase5-fix/lib/gritz/supervisor/admin_server.rb": "9435187752854f8670171715a39b175a45c6d11e604584dc69b955bbf9b4911b",
+    "gritz-core-phase5-fix/lib/gritz/supervisor/launcher.rb": "36c5ae0468e5e07b9380f9fa5a2c7e8a96d46b0cf1dcefcad300faea91a6dfab",
+    "gritz-core-phase5-fix/lib/gritz/supervisor/master.rb": "f9c74068845efbcd1a794a3a7d41106962e85140f3eac8782e8c026adf89d5ba",
+    "gritz-core-phase5-fix/lib/gritz/supervisor/signal_queue.rb": "a18871ee602923d3011bd0e440129aaa2843f8b997f8d38e0000ebd1e9084d75",
+    "gritz-core-phase5-fix/lib/gritz/supervisor/status_channel.rb": "c12887bb55063098d0e6e11c5852406743e9356d40a82711cca7d9a95b137dea",
+    "gritz-core-phase5-fix/lib/gritz/supervisor/worker_handle.rb": "68476d06bc95fa52b336c667024ebf83c68b23792671e74e448d6ea8e63d3b18",
+    "gritz-core-phase5-fix/lib/gritz/testing/cluster.rb": "1796d2c7465c118ab75d53662dabb330d4059bff04e955fe0426afa3384407ae",
+    "gritz-core-phase5-fix/lib/gritz/testing/in_memory_call.rb": "f0db9ee1450ad69709a4abf5eb5a170e720d31134e36df1b237722675f74aaf5",
+    "gritz-core-phase5-fix/lib/gritz/testing/minitest.rb": "662d22219a2a0f9fbd37417408797940b5a7df8bd64146df4d027abbcaa986c4",
+    "gritz-core-phase5-fix/lib/gritz/testing/rpc_helper.rb": "18305788da3d54b33d7fad830e2243226de9f84df4c0d1b5a44eade16d56f548",
+    "gritz-core-phase5-fix/lib/gritz/testing/rspec.rb": "5cccece90d4ace857260ab9e311d6b7207d9e89d40e2aecc77e58845d88a053f",
+    "gritz-core-phase5-fix/lib/gritz/worker/runner.rb": "fa8bc585bffda25f663e6b516ccb219728a38f61d10727516da1eceff3cbd9a2",
+    "gritz-rails/examples/rails_app/app/controllers/application_controller.rb": "b57fc63b23fdbeab4a8305af9575ff8c9799a28f5937941d8945a290c06c1496",
+    "gritz-rails/examples/rails_app/app/models/application_record.rb": "4f269f401f3a48c1c49a7afee84a2f8bf38db23fc634aca0c0734a23c7dab60c",
+    "gritz-rails/examples/rails_app/app/models/current.rb": "42ac017be48da9804b1ee4ce805f355f1601e7338c78167bb12055f54218d255",
+    "gritz-rails/examples/rails_app/app/models/product.rb": "fc81cebb7bd70f477fcf4c7957a2e605ba72e137a3b5e0add0887e643f80db52",
+    "gritz-rails/examples/rails_app/app/rpc/products_controller.rb": "7df092ca38c819a66bbb4d8c630ae28ae97ddd05f4f32815a856411f03e731d0",
+    "gritz-rails/examples/rails_app/config/application.rb": "ce4a2b4097f6c23cfc1e056a8b0c2570db4b562fbbff99a2dc5bfc7bf185819c",
+    "gritz-rails/examples/rails_app/config/boot.rb": "87cee9a027c3c29c61beeb82b6c11ba86305c1cb54a60ef6f49290261922a62a",
+    "gritz-rails/examples/rails_app/config/database.yml": "90f91f41d994e32b47b3d6f9a31fdd3e28e0fa95f2bcec686482cc488f07ab9b",
+    "gritz-rails/examples/rails_app/config/environment.rb": "f932fde7d8ac2cd8f88613c9febb6cdc7325090b84f89c5b39f1239f7535368e",
+    "gritz-rails/examples/rails_app/config/environments/development.rb": "3cfc075f3c1a3faaa00e5bfdf363fd4c98d32103e5c7bea3dda7196f6bcbcfd0",
+    "gritz-rails/examples/rails_app/config/environments/production.rb": "8a70dcd43e8f1928158c9e7e5089463f5849ea2190597d01023916eec5f70506",
+    "gritz-rails/examples/rails_app/config/environments/test.rb": "8b4d9d5521666a1380919f8d6fee6c0e2052b5f79a148a09e43e3c78cc94f9d7",
+    "gritz-rails/examples/rails_app/config/gritz.rb": "89c740b351f02589a47023f17e91cf9989aa454ba68f8e8877563e9e90001a85",
+    "gritz-rails/examples/rails_app/config/initializers/filter_parameter_logging.rb": "84980c029304646f67b2acd15605432321f4cbdaf4499af61623f1fede997818",
+    "gritz-rails/examples/rails_app/config/initializers/gritz.rb": "04b1992ff1ee1720b1f63b50ffac0635e0e7fb351c8b4a0359ed0b7e3230f14b",
+    "gritz-rails/examples/rails_app/config/routes.rb": "d2718964fb062b14e316f917dcc5169e207c11fd6f4f94afe45c3de978b02b1a",
+    "gritz-rails/examples/rails_app/db/schema.rb": "321408a09feddff14c808dacd6386d996f52cc9517f5ae4b07de3fb840b7bd3a",
+    "gritz-rails/examples/rails_app/db/seeds.rb": "1be21dfb0d751a70c09380ee398d3ffd6bbb6feb742401d947abb08dfd89ce95",
+    "gritz-rails/examples/rails_app/lib/protos/catalog.proto": "b4155ace1260a926b8f4ee3c2125cffde04a1a447ceef26a46efd63c4965e657",
+    "gritz-rails/examples/rails_app/lib/protos/catalog_pb.rb": "c273f9e8ccab50594a5378d78fc800697ca19b8ff3b10475ca6a6117e4d84ac5",
+    "gritz-rails/examples/rails_app/lib/protos/catalog_services_pb.rb": "7517e78c9a28bbb48f5514b59e5f0d8dd7d146d56ed07fa271893dca1b3593bf",
+    "gritz-rails/lib/gritz/rails.rb": "403f5a09d4b92301143f79db495380f0b888212af2c7aa1fc523ee6e541e6803",
+    "gritz-rails/lib/gritz/rails/executor.rb": "077dca2582a28a51e8ca3fca1c819c825151629d30d6aba1def459be8451c9c5",
+    "gritz-rails/lib/gritz/rails/railtie.rb": "ca39c6fe1000035f9d2c0c1a7815a461caf7beb889465ec45e86268cf1951c69",
+    "gritz-rails/lib/gritz/rails/version.rb": "f218d36c0da1ccb1b1bfd0090940df9b6b707abfa8596391a147dd05a2888334",
+    "gritz-rails/tools/check_rails_memory.rb": "0acd71ed753bb8b43cc8158c36089efee9bb76758d1ef62e28d3d876d4f954b2"
+  },
+  "conditions": [
+    {
+      "name": "single",
+      "workers": 0,
+      "eager_preload": true,
+      "warmup": false,
+      "duration_seconds": 600.0101082239999,
+      "requests": 60000,
+      "errors": 0,
+      "error_examples": [],
+      "requests_by_pid": {
+        "20812": 60000
+      },
+      "processes": [
+        {
+          "pid": 20810,
+          "rss_bytes": 32514048,
+          "pss_bytes": 26942464,
+          "uss_bytes": 25112576
+        },
+        {
+          "pid": 20812,
+          "rss_bytes": 114700288,
+          "pss_bytes": 102038528,
+          "uss_bytes": 93151232
+        }
+      ],
+      "worker_memory": [
+        {
+          "pid": 20812,
+          "rss_bytes": 114700288,
+          "pss_bytes": 102038528,
+          "uss_bytes": 93151232
+        }
+      ],
+      "total_pss_bytes": 128980992,
+      "memory_snapshots": [
+        {
+          "elapsed_seconds": 30.000215748965275,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 31727616,
+              "pss_bytes": 26156032,
+              "uss_bytes": 24326144
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 112979968,
+              "pss_bytes": 100393984,
+              "uss_bytes": 91566080
+            }
+          ],
+          "total_pss_bytes": 126550016
+        },
+        {
+          "elapsed_seconds": 60.01095559896203,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32288768,
+              "pss_bytes": 26717184,
+              "uss_bytes": 24887296
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 113209344,
+              "pss_bytes": 100596736,
+              "uss_bytes": 91742208
+            }
+          ],
+          "total_pss_bytes": 127313920
+        },
+        {
+          "elapsed_seconds": 90.01933597796597,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 31821824,
+              "pss_bytes": 26250240,
+              "uss_bytes": 24420352
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 113446912,
+              "pss_bytes": 100834304,
+              "uss_bytes": 91979776
+            }
+          ],
+          "total_pss_bytes": 127084544
+        },
+        {
+          "elapsed_seconds": 120.02945462299976,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 31866880,
+              "pss_bytes": 26295296,
+              "uss_bytes": 24465408
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 113631232,
+              "pss_bytes": 101018624,
+              "uss_bytes": 92164096
+            }
+          ],
+          "total_pss_bytes": 127313920
+        },
+        {
+          "elapsed_seconds": 150.03678656497505,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 31780864,
+              "pss_bytes": 26209280,
+              "uss_bytes": 24379392
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 113668096,
+              "pss_bytes": 101055488,
+              "uss_bytes": 92200960
+            }
+          ],
+          "total_pss_bytes": 127264768
+        },
+        {
+          "elapsed_seconds": 180.0426806549658,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32366592,
+              "pss_bytes": 26795008,
+              "uss_bytes": 24965120
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 113778688,
+              "pss_bytes": 101166080,
+              "uss_bytes": 92311552
+            }
+          ],
+          "total_pss_bytes": 127961088
+        },
+        {
+          "elapsed_seconds": 210.04505146300653,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32358400,
+              "pss_bytes": 26786816,
+              "uss_bytes": 24956928
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 113934336,
+              "pss_bytes": 101321728,
+              "uss_bytes": 92467200
+            }
+          ],
+          "total_pss_bytes": 128108544
+        },
+        {
+          "elapsed_seconds": 240.0523962379666,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 31834112,
+              "pss_bytes": 26262528,
+              "uss_bytes": 24432640
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 113971200,
+              "pss_bytes": 101358592,
+              "uss_bytes": 92504064
+            }
+          ],
+          "total_pss_bytes": 127621120
+        },
+        {
+          "elapsed_seconds": 270.0600181519985,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32436224,
+              "pss_bytes": 26864640,
+              "uss_bytes": 25034752
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 113999872,
+              "pss_bytes": 101387264,
+              "uss_bytes": 92532736
+            }
+          ],
+          "total_pss_bytes": 128251904
+        },
+        {
+          "elapsed_seconds": 300.072153245972,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 31862784,
+              "pss_bytes": 26291200,
+              "uss_bytes": 24461312
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114167808,
+              "pss_bytes": 101522432,
+              "uss_bytes": 92635136
+            }
+          ],
+          "total_pss_bytes": 127813632
+        },
+        {
+          "elapsed_seconds": 330.08780980296433,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32428032,
+              "pss_bytes": 26856448,
+              "uss_bytes": 25026560
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114204672,
+              "pss_bytes": 101559296,
+              "uss_bytes": 92672000
+            }
+          ],
+          "total_pss_bytes": 128415744
+        },
+        {
+          "elapsed_seconds": 360.10061852500075,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32485376,
+              "pss_bytes": 26913792,
+              "uss_bytes": 25083904
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114245632,
+              "pss_bytes": 101600256,
+              "uss_bytes": 92712960
+            }
+          ],
+          "total_pss_bytes": 128514048
+        },
+        {
+          "elapsed_seconds": 390.1133138019941,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32505856,
+              "pss_bytes": 26934272,
+              "uss_bytes": 25104384
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114262016,
+              "pss_bytes": 101616640,
+              "uss_bytes": 92729344
+            }
+          ],
+          "total_pss_bytes": 128550912
+        },
+        {
+          "elapsed_seconds": 420.12755236198427,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 31834112,
+              "pss_bytes": 26262528,
+              "uss_bytes": 24432640
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114323456,
+              "pss_bytes": 101678080,
+              "uss_bytes": 92790784
+            }
+          ],
+          "total_pss_bytes": 127940608
+        },
+        {
+          "elapsed_seconds": 450.14094415999716,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32501760,
+              "pss_bytes": 26930176,
+              "uss_bytes": 25100288
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114343936,
+              "pss_bytes": 101698560,
+              "uss_bytes": 92811264
+            }
+          ],
+          "total_pss_bytes": 128628736
+        },
+        {
+          "elapsed_seconds": 480.1533960509696,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32505856,
+              "pss_bytes": 26934272,
+              "uss_bytes": 25104384
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114348032,
+              "pss_bytes": 101702656,
+              "uss_bytes": 92815360
+            }
+          ],
+          "total_pss_bytes": 128636928
+        },
+        {
+          "elapsed_seconds": 510.1572995649767,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32514048,
+              "pss_bytes": 26942464,
+              "uss_bytes": 25112576
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114360320,
+              "pss_bytes": 101714944,
+              "uss_bytes": 92827648
+            }
+          ],
+          "total_pss_bytes": 128657408
+        },
+        {
+          "elapsed_seconds": 540.1662931739702,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 31952896,
+              "pss_bytes": 26381312,
+              "uss_bytes": 24551424
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114434048,
+              "pss_bytes": 101788672,
+              "uss_bytes": 92901376
+            }
+          ],
+          "total_pss_bytes": 128169984
+        },
+        {
+          "elapsed_seconds": 570.1686806780053,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32530432,
+              "pss_bytes": 26958848,
+              "uss_bytes": 25128960
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114495488,
+              "pss_bytes": 101850112,
+              "uss_bytes": 92962816
+            }
+          ],
+          "total_pss_bytes": 128808960
+        },
+        {
+          "elapsed_seconds": 600.0018287099665,
+          "processes": [
+            {
+              "pid": 20810,
+              "rss_bytes": 32514048,
+              "pss_bytes": 26942464,
+              "uss_bytes": 25112576
+            },
+            {
+              "pid": 20812,
+              "rss_bytes": 114700288,
+              "pss_bytes": 102038528,
+              "uss_bytes": 93151232
+            }
+          ],
+          "total_pss_bytes": 128980992
+        }
+      ],
+      "final_three_total_pss_median_bytes": 128808960,
+      "owned_processes_reaped": true,
+      "gc_counters": [
+        {
+          "stage": "worker_boot",
+          "pid": 20812,
+          "major_gc_count": 4,
+          "minor_gc_count": 12,
+          "need_major_by": "oldmalloc",
+          "allow_full_mark": true
+        },
+        {
+          "stage": "worker_shutdown",
+          "pid": 20812,
+          "major_gc_count": 5,
+          "minor_gc_count": 170,
+          "need_major_by": null,
+          "allow_full_mark": true
+        }
+      ],
+      "max_worker_pss_to_single_rss": 0.891201302185812
+    }
+  ],
+  "complete": false,
+  "baseline_single_rss_bytes": 114495488,
+  "additional_workers": []
+}

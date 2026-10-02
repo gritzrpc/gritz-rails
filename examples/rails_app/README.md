@@ -29,3 +29,11 @@ Production Reflection is disabled. Supply `-import-path lib/protos -proto catalo
 The database defaults to `storage/catalog.sqlite3`. Override `CATALOG_DATABASE` for a separate database and `RAILS_MAX_THREADS` for pool capacity (default16, matching Gritz threads). `CATALOG_AUTO_SEED=1` is used only by isolated test/benchmark databases; normal setup uses `db:prepare`.
 
 The Linux integration test exercises records, streaming, validation errors and every worker, then checks every owned PID exited. The [memory report](../../docs/reports/T5-07-rails-memory.md) compares loaded single-process RSS with marginal prefork PSS, and records no eager preload, eager preload and eager preload plus Ruby warmup.
+
+The measured memory profile uses four threads and four database connections per worker on a two-CPU Linux host:
+
+```sh
+RAILS_ENV=production GRITZ_THREADS=4 RAILS_MAX_THREADS=4 bundle exec ruby bin/gritz start
+```
+
+All three additional-worker PSS ratios stayed below 40% of single-process RSS during the 10-minute tests. The report includes the exact load, source hashes and failed earlier runs; other thread counts and applications require their own measurements.

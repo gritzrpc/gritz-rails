@@ -1,0 +1,58 @@
+{
+  "started_at": "2026-10-02T10:52:18Z",
+  "complete": false,
+  "excluded": true,
+  "reason": "Host idle sleep interrupted RPC deadlines; this attempt is excluded from formal memory results.",
+  "host_sleep": {
+    "started_at": "2026-10-02T10:54:15Z",
+    "woke_at": "2026-10-02T10:55:05Z",
+    "duration_seconds": 50,
+    "evidence": "Host pmset -g log verified by the parent agent"
+  },
+  "core_source_commit": "e8999ec45992d0ce4797e230c0ea28ede46dc92d",
+  "last_observed_sampling": {
+    "name": "single",
+    "elapsed_seconds": 450.1,
+    "requests": 45014,
+    "errors": 2,
+    "total_pss_bytes": 128879616
+  },
+  "diagnostic": {
+    "observed_at": "2026-10-02 11:00:41 UTC",
+    "server_logged_requests": 45428,
+    "server_error_rows": [
+      {
+        "request_id": "8c2464eb-e37e-44e7-88a6-d587e27eee07",
+        "service": "catalog.Products",
+        "method": "GetProduct",
+        "code": "deadline_exceeded",
+        "duration_ms": 0.354,
+        "peer": "ipv4:127.0.0.1:52102",
+        "worker": 0,
+        "pid": 19987,
+        "bytes_in": 0,
+        "bytes_out": 0
+      },
+      {
+        "request_id": "9a1ffe5a-c69e-4c6f-9142-9a8dddd309f1",
+        "service": "catalog.Products",
+        "method": "GetProduct",
+        "code": "deadline_exceeded",
+        "duration_ms": 0.122,
+        "peer": "ipv4:127.0.0.1:52086",
+        "worker": 0,
+        "pid": 19987,
+        "bytes_in": 0,
+        "bytes_out": 0
+      }
+    ],
+    "tool_sha256": "ea0b3089924a71e621540f9ed779fc564a0df2fc9cd6eac25d498c93430575b2"
+  },
+  "owned_processes": [
+    19977,
+    19985,
+    19987
+  ],
+  "owned_processes_reaped": true,
+  "caveat": "Server completion log rows do not include wall timestamps; association uses the sleep interval, sampling interval, and elapsed-time discrepancy."
+}
