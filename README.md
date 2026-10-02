@@ -28,7 +28,7 @@ Generated `config/gritz.rb` loads the application through `rails_app`, selects f
 
 Every complete application RPC runs inside the Rails executor. Development uses the Rails reloader and resolves controller constants after reload. Active Record connections return to their pools, query caches finish and CurrentAttributes reset on successful and failed calls. Application threads created inside a handler must use Rails' own executor wrapping. See the [Rails execution guide](https://guides.rubyonrails.org/threading_and_code_execution.html).
 
-Application code is eager loaded before fork, and all Active Record pools disconnect before each fork. Ruby's Rails fork tracking remains active. Development reloading requires `workers 0`; changing protobuf definitions, bound services or registered routes requires a server restart. Production code changes use Gritz's `USR2` fresh-interpreter replacement.
+Application code is eager loaded before fork. In prefork mode, all Active Record pools disconnect after eager loading, before Ruby warmup, and again before each fork. Ruby's Rails fork tracking remains active. Development reloading requires `workers 0`; changing protobuf definitions, bound services or registered routes requires a server restart. Production code changes use Gritz's `USR2` fresh-interpreter replacement.
 
 `app/rpc` participates in Rails autoloading and eager loading. Generated protobuf files in `lib/protos` are excluded from both Zeitwerk loaders and required explicitly by the generated initializer. Keep generated files outside normal autoload directories.
 

@@ -29,17 +29,19 @@ module Gritz
       else
         config.middleware.use(Executor, application:, development:)
       end
+      disconnect_pools = lambda do |_index = nil|
+        if defined?(ActiveRecord::Base)
+          ActiveRecord::Base.connection_handler.connection_pool_list(:all).each(&:disconnect!)
+        end
+      end
       config.add_preloader do
         raise ConfigurationError, "Rails development mode requires workers 0" if development && config.workers.positive?
 
         application.eager_load!
         config.controllers.map! { |controller| reloadable_controller(controller) } if development
+        disconnect_pools.call if config.workers.positive?
       end
-      config.add_hook(:before_fork) do |_index|
-        if defined?(ActiveRecord::Base)
-          ActiveRecord::Base.connection_handler.connection_pool_list(:all).each(&:disconnect!)
-        end
-      end
+      config.add_hook(:before_fork, &disconnect_pools)
       config
     end
 

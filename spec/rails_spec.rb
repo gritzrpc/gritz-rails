@@ -107,18 +107,24 @@ RSpec.describe "Rails integration" do
     expect { config.preload! }.to raise_error(Gritz::ConfigurationError, /workers 0/)
   end
 
-  it "disconnects every Active Record pool before fork, including secondary databases" do
+  it "disconnects every Active Record pool before warmup and each fork, including secondary databases" do
     secondary = Class.new(ActiveRecord::Base)
     Object.const_set(:SecondaryRecord, secondary)
     secondary.abstract_class = true
     secondary.establish_connection(adapter: "sqlite3", database: "#{@root}/secondary.sqlite3")
     pools = ActiveRecord::Base.connection_handler.connection_pool_list(:all)
     pools.each(&:lease_connection)
+    Rails.env = "production"
     config = configuration
+    config.workers = 2
+    config.preload!
+    expect(pools.map(&:connected?)).to all(be(false))
+    pools.each(&:lease_connection)
     config.run_hooks(:before_fork, 0)
     expect(pools.map(&:connected?)).to all(be(false))
     expect(Process.singleton_class.ancestors).to include(ActiveSupport::ForkTracker::CoreExt)
   ensure
+    Rails.env = "development"
     secondary&.remove_connection
     Object.send(:remove_const, :SecondaryRecord) if Object.const_defined?(:SecondaryRecord)
   end
