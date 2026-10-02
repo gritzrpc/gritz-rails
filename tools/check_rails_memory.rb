@@ -37,20 +37,47 @@ end
 def monotonic = Process.clock_gettime(Process::CLOCK_MONOTONIC)
 def median(values) = values.sort.fetch(values.size / 2)
 
+def single_rss_bytes(result)
+  pid = result.fetch(:worker_memory).first.fetch(:pid)
+  median(result.fetch(:memory_snapshots).last(3).map do |snapshot|
+    snapshot.fetch(:processes).find { |process| process.fetch(:pid) == pid }.fetch(:rss_bytes)
+  end)
+end
+
+def additional_workers(results, baseline_rss)
+  results.select { |row| row[:warmup] && row[:workers].positive? }.each_cons(2).map do |previous, current|
+    bytes = current.fetch(:final_three_total_pss_median_bytes) - previous.fetch(:final_three_total_pss_median_bytes)
+    { worker_count_from: previous.fetch(:workers), worker_count_to: current.fetch(:workers), additional_fleet_pss_bytes: bytes,
+      additional_pss_to_single_rss: bytes.fdiv(baseline_rss) }
+  end
+end
+
+def gc_counters(logs)
+  logs.lines.filter_map do |line|
+    JSON.parse(line.delete_prefix("GRITZ_MEMORY_GC "), symbolize_names: true) if line.start_with?("GRITZ_MEMORY_GC ")
+  end
+end
+
+case_set = ENV.fetch("CASE_SET", "full")
+abort "CASE_SET must be full or fixed_gate" unless %w[full fixed_gate].include?(case_set)
 cases = [["single", 0, true, false], ["no_eager_preload", 4, false, false],
          ["preload", 4, true, false], *1.upto(4).map { |count| ["preload_warmup_#{count}", count, true, true] }]
+cases = cases.select { |name, _count, _eager, warmup| name == "single" || warmup } if case_set == "fixed_gate"
 results = []
 $stdout.sync = true
+core_root = Gem.loaded_specs.fetch("gritz-core").full_gem_path
 source_paths = [__FILE__, *Dir[File.join(sample, "{app,config,db,lib}", "**", "*.{rb,proto,yml}")],
                 *Dir[File.expand_path("../lib/gritz/**/*.rb", __dir__)],
-                File.expand_path("../../gritz-core/lib/gritz/supervisor/master.rb", __dir__),
-                File.expand_path("../../gritz-core/lib/gritz/worker/runner.rb", __dir__)].map { |path| File.expand_path(path) }.sort
+                *Dir[File.join(core_root, "lib/**/*.rb")]].map { |path| File.expand_path(path) }.sort
 workspace = File.expand_path("../..", __dir__)
 source_hashes = source_paths.to_h { |path| [path.delete_prefix("#{workspace}/"), Digest::SHA256.file(path).hexdigest] }
 report = { started_at: Time.now.utc.iso8601, ruby: RUBY_DESCRIPTION, rails: Gem.loaded_specs.fetch("railties").version.to_s,
            active_record: Gem.loaded_specs.fetch("activerecord").version.to_s, sqlite3: Gem.loaded_specs.fetch("sqlite3").version.to_s,
            grpc: Gem.loaded_specs.fetch("grpc").version.to_s, kernel: File.read("/proc/version").strip,
-           duration_per_case: duration, sequential: true, cpu_count: Etc.nprocessors,
+           duration_per_case: duration, sequential: true, case_set:, cpu_count: Etc.nprocessors,
+           core_source_root: core_root, core_source_commit: ENV.fetch("RAILS_MEMORY_CORE_COMMIT", nil),
+           gc_policy: case_set == "full" ? "ordinary GC control" : "sample before_fork opt-in",
+           gc_probe: case_set == "fixed_gate" ? "four scalar GC values at first before_fork, master exit, worker boot/shutdown" : nil,
            mem_total_kib: Integer(File.read("/proc/meminfo")[/^MemTotal:\s+(\d+)/, 1]),
            load: { target_requests_per_second: 100, client_threads: 4, channels: 32, server_threads_per_worker: 16, rpc_deadline_seconds: 2 },
            source_sha256: source_hashes, conditions: results, complete: false }
@@ -66,6 +93,28 @@ Dir.mktmpdir("gritz-rails-memory") do |directory|
     config_source = "instance_eval(File.read(#{application_config.inspect}), #{application_config.inspect})\n"
     # The no-preload case retains initialized Rails, then eagerly loads application code in workers.
     config_source += "@config.preload_app = false\n" unless eager_preload
+    if case_set == "full"
+      config_source += "before_fork { GC.config(rgengc_allow_full_mark: true) if GC.respond_to?(:config) }\n"
+    end
+    if case_set == "fixed_gate"
+      config_source += <<~RUBY
+        gc_probe = lambda do |stage|
+          STDERR.puts("GRITZ_MEMORY_GC " + JSON.generate(stage:, pid: Process.pid,
+            major_gc_count: GC.stat(:major_gc_count), minor_gc_count: GC.stat(:minor_gc_count),
+            need_major_by: GC.latest_gc_info(:need_major_by),
+            allow_full_mark: GC.respond_to?(:config) ? GC.config[:rgengc_allow_full_mark] : nil))
+        end
+        before_fork do |index|
+          if index.zero?
+            master_pid = Process.pid
+            gc_probe.call("before_fork")
+            at_exit { gc_probe.call("master_exit") if Process.pid == master_pid }
+          end
+        end
+        on_worker_boot { |_index| gc_probe.call("worker_boot") }
+        on_worker_shutdown { |_index| gc_probe.call("worker_shutdown") }
+      RUBY
+    end
     File.write(config_path, config_source)
     address = free_address
     env = { "RAILS_ENV" => "production", "GRITZ_WORKERS" => count.to_s, "GRITZ_THREADS" => "16", "GRITZ_BIND" => address,
@@ -82,6 +131,7 @@ Dir.mktmpdir("gritz-rails-memory") do |directory|
       worker_pids = cluster.workers.map { |worker| worker.fetch(:pid) }
       owned = [cluster.pid, cluster.master_pid, *worker_pids].uniq
       puts JSON.generate(event: "ready", name:, owner_pid: cluster.pid, master_pid: cluster.master_pid, worker_pids:, at: Time.now.utc.iso8601)
+      startup_gc = gc_counters(cluster.logs) if case_set == "fixed_gate"
       requests = errors = 0
       error_examples = []
       served = Hash.new(0)
@@ -155,24 +205,31 @@ Dir.mktmpdir("gritz-rails-memory") do |directory|
       next
     end
     row[:owned_processes_reaped] = true
+    if case_set == "fixed_gate"
+      row[:gc_counters] = (startup_gc + gc_counters(cluster.logs)).uniq
+      %w[worker_boot worker_shutdown].each do |stage|
+        pids = row.fetch(:gc_counters).select { |entry| entry.fetch(:stage) == stage }.map { |entry| entry.fetch(:pid) }
+        raise "missing #{stage} GC probe: #{pids.inspect}" unless pids.sort == worker_pids.sort
+      end
+      if count.positive? && row.fetch(:gc_counters).count { |entry| %w[before_fork master_exit].include?(entry.fetch(:stage)) } != 2
+        raise "missing master GC probe"
+      end
+    end
     results << row
+    baseline_rss = single_rss_bytes(results.first)
+    row[:max_worker_pss_to_single_rss] = row.fetch(:worker_memory).map { |worker| worker.fetch(:pss_bytes).fdiv(baseline_rss) }.max
+    increments = additional_workers(results, baseline_rss)
+    report.merge!(baseline_single_rss_bytes: baseline_rss, additional_workers: increments)
+    failed = case_set == "fixed_gate" && increments.any? { |increment| increment.fetch(:additional_pss_to_single_rss) > 0.4 }
+    report.merge!(gate_passed: false, stopped_after: name, stop_reason: "additional worker PSS exceeded 40%") if failed
     File.write(output_path, "#{JSON.pretty_generate(report)}\n")
     puts JSON.generate(event: "completed", name:, duration_seconds: elapsed, requests:, errors:, all_workers_loaded: true,
                        owned_processes_reaped: true, total_pss_bytes: row.fetch(:final_three_total_pss_median_bytes))
+    abort "additional preloaded worker PSS exceeded 40%; remaining cases were not measured" if failed
   end
 end
-single_pid = results.first.fetch(:worker_memory).first.fetch(:pid)
-baseline_rss = median(results.first.fetch(:memory_snapshots).last(3).map do |snapshot|
-  snapshot.fetch(:processes).find { |process| process.fetch(:pid) == single_pid }.fetch(:rss_bytes)
-end)
-results.each do |row|
-  row[:max_worker_pss_to_single_rss] = row.fetch(:worker_memory).map { |worker| worker.fetch(:pss_bytes).fdiv(baseline_rss) }.max
-end
-increments = results.select { |row| row[:warmup] && row[:workers].positive? }.each_cons(2).map do |previous, current|
-  bytes = current.fetch(:final_three_total_pss_median_bytes) - previous.fetch(:final_three_total_pss_median_bytes)
-  { worker_count_from: previous.fetch(:workers), worker_count_to: current.fetch(:workers), additional_fleet_pss_bytes: bytes,
-    additional_pss_to_single_rss: bytes.fdiv(baseline_rss) }
-end
+baseline_rss = single_rss_bytes(results.first)
+increments = additional_workers(results, baseline_rss)
 report.merge!(completed_at: Time.now.utc.iso8601, complete: true, baseline_single_rss_bytes: baseline_rss,
               measurement: "median of final three 30-second smaps_rollup snapshots; same preloaded master plus N workers, N=1..4",
               additional_workers: increments, gate_passed: increments.all? { |row| row.fetch(:additional_pss_to_single_rss) <= 0.4 })
