@@ -1,0 +1,4 @@
+development:
+  adapter: sqlite3
+  database: <%= Rails.root.join("database.sqlite3") %>
+  pool: 4

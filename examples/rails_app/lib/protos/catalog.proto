@@ -1,0 +1,15 @@
+syntax = "proto3";
+package catalog;
+service Products {
+  rpc GetProduct(ProductRequest) returns (ProductReply);
+  rpc ListProducts(ListRequest) returns (stream ProductReply);
+}
+message ProductRequest { int64 id = 1; }
+message ListRequest { int32 limit = 1; }
+message ProductReply {
+  int64 id = 1;
+  string name = 2;
+  int32 price_cents = 3;
+  int64 worker_pid = 4;
+  string request_id = 5;
+}

@@ -1,0 +1,39 @@
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: enable
+  CacheRootDirectory: tmp/rubocop
+  Exclude:
+    - examples/rails_app/lib/protos/*_pb.rb
+    - examples/rails_app/lib/protos/*_services_pb.rb
+    - spec/fixtures/**/*_pb.rb
+    - spec/fixtures/**/*_services_pb.rb
+    - vendor/**/*
+    - tmp/**/*
+    - coverage/**/*
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/Documentation:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/ConditionalAssignment:
+  Enabled: false
+Style/MultilineBlockChain:
+  Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
+Style/EmptyElse:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: false
+Style/BlockDelimiters:
+  Enabled: false
+Style/HashSyntax:
+  EnforcedShorthandSyntax: either
+Style/MutableConstant:
+  Enabled: false
+Metrics:
+  Enabled: false
+Layout/LineLength:
+  Max: 160

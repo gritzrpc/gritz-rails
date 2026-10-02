@@ -1,0 +1,18 @@
+/.bundle/
+/Gemfile.lock
+/vendor/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+# rspec failure tracking
+.rspec_status
+/examples/rails_app/log/
+/examples/rails_app/tmp/
+/examples/rails_app/storage/
+/examples/rails_app/.bundle/
+/examples/rails_app/Gemfile.lock

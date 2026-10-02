@@ -1,0 +1,11 @@
+# frozen_string_literal: true
+
+class <%= class_name %>Controller < Gritz::Controller
+  bind ::<%= service_class_name %>
+<% actions.each do |action| -%>
+
+  def <%= action.underscore %>
+    fail!(:unimplemented, "Implement <%= action.underscore %>")
+  end
+<% end -%>
+end

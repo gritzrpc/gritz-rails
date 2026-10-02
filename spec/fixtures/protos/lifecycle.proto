@@ -1,0 +1,12 @@
+syntax = "proto3";
+package rails_rpc;
+
+message Request { string value = 1; }
+message Response { string value = 1; }
+
+service Lifecycle {
+  rpc Unary(Request) returns (Response);
+  rpc Upload(stream Request) returns (Response);
+  rpc Download(Request) returns (stream Response);
+  rpc Chat(stream Request) returns (stream Response);
+}
