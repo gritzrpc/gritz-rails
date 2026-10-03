@@ -1,12 +1,12 @@
 # Gritz Rails
 
-Rails integration for [Gritz](https://github.com/gritzrpc/gritz): RPC controller loading, generators, complete-RPC execution and single-process development reloading. Requires CRuby 3.3+, Rails 8.0 or 8.1, and Gritz 0.6.0. Runtime dependencies are `gritz-core` and `railties`; applications choose their transport separately.
+Rails integration for [Gritz](https://github.com/gritzrpc/gritz): RPC controller loading, generators, complete-RPC execution and single-process development reloading. Requires CRuby 3.3+, Rails 8.0 or 8.1, and Gritz 0.9.0. Runtime dependencies are `gritz-core` and `railties`; applications choose their transport separately.
 
 ## Install
 
 ```ruby
-gem "gritz", "~> 0.6.0"
-gem "gritz-rails", "~> 0.2.0"
+gem "gritz", "~> 0.9.0"
+gem "gritz-rails", "~> 0.9.0"
 ```
 
 ```sh
@@ -57,6 +57,10 @@ bundle exec rake build
 CI tests Ruby 3.3, 3.4 and 4.0 against Rails 8.0 and 8.1. Tests include real RPCs, file-change reloading, all-pool fork cleanup, executable generated configuration and Linux four-worker sample lifecycle. Sibling checkout overrides follow [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Publication uses [Trusted Publishing](docs/guides/releasing.md).
+
+## Documentation
+
+Read the [published guides and API reference](https://gritzrpc.github.io/gritz/), [public API policy](https://github.com/gritzrpc/gritz/blob/main/docs/public-api.md), [support policy](https://github.com/gritzrpc/gritz/blob/main/docs/support-policy.md) and [stabilization gate](https://github.com/gritzrpc/gritz/blob/main/docs/stabilization.md).
 
 ## License
 

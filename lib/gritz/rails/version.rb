@@ -2,6 +2,6 @@
 
 module Gritz
   module Rails
-    VERSION = "0.2.1"
+    VERSION = "0.9.0"
   end
 end
