@@ -21,6 +21,6 @@ Gem::Specification.new do |spec|
   }
   spec.files = Dir.chdir(__dir__) { Dir["lib/**/*", "README.md", "LICENSE.txt", "CHANGELOG.md"] }
   spec.require_paths = ["lib"]
-  spec.add_dependency "gritz-core", "= 0.9.0"
+  spec.add_dependency "gritz-core", "= 0.9.1"
   spec.add_dependency "railties", ">= 8.0", "< 9"
 end
