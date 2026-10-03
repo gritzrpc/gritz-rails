@@ -60,6 +60,30 @@ RSpec.describe "Rails integration" do
     expect(Gritz::Router.new(controllers: config.controllers).routes.values.map { |route| route.controller.to_s }.uniq).to eq(["LifecycleController"])
   end
 
+  it "isolates Rails state between Async fibers and leaves unsupported reflection disabled" do
+    previous = ActiveSupport::IsolatedExecutionState.isolation_level
+    config = Gritz::Configuration.new
+    config.transport = :async
+    config.controllers = [LifecycleController]
+    Gritz::Rails.install(config, application: @application.instance)
+    expect(config.reflection).to be(false)
+    expect(ActiveSupport::IsolatedExecutionState.isolation_level).to eq(:fiber)
+    executor = Gritz::Rails::Executor.new(lambda { |value|
+      Current.value = value
+      Fiber.yield
+      Current.value
+    }, application: @application.instance)
+    first = Fiber.new { executor.call("first") }
+    second = Fiber.new { executor.call("second") }
+    first.resume
+    second.resume
+    expect(first.resume).to eq("first")
+    expect(second.resume).to eq("second")
+    expect(Current.value).to be_nil
+  ensure
+    ActiveSupport::IsolatedExecutionState.isolation_level = previous
+  end
+
   it "returns leased connections, resets CurrentAttributes and disables query caching after every RPC and failure" do
     config = configuration
     Gritz::Testing::Server.start(config) do |server|

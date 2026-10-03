@@ -22,7 +22,8 @@ module Gritz
       end
 
       development = ::Rails.env.development?
-      config.reflection = true if development
+      ActiveSupport::IsolatedExecutionState.isolation_level = :fiber if config.transport == :async
+      config.reflection = true if development && config.transport == :native
       first = config.middleware.entries.first
       if first
         config.middleware.insert_before(first.middleware, Executor, application:, development:)
@@ -35,6 +36,7 @@ module Gritz
         end
       end
       config.add_preloader do
+        ActiveSupport::IsolatedExecutionState.isolation_level = :fiber if config.transport == :async
         raise ConfigurationError, "Rails development mode requires workers 0" if development && config.workers.positive?
 
         application.eager_load!

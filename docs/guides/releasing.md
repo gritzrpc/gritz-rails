@@ -2,7 +2,7 @@
 
 The first release is performed by the project owner. Build and review `pkg/gritz-rails.gem` after all checks and CI pass, then stop before publishing or pushing the initial tag. Initial CHANGELOG notes remain exactly `Initial release.`.
 
-Core and native 0.5.0 must be available on RubyGems before the release workflow runs. Configure this Trusted Publisher on RubyGems:
+Core and native 0.6.0 must be available on RubyGems before the release workflow runs. Configure this Trusted Publisher on RubyGems:
 
 | Field | Value |
 | --- | --- |
